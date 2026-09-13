@@ -144,43 +144,42 @@ Retrieved context:
 {context}
 """
 
-   # Ask Gemini to generate the answer
-response = llm.invoke(prompt)
+    # Ask Gemini to generate the answer
+    response = llm.invoke(prompt)
 
-# Read the content returned by Gemini
-raw_content = response.content
+    # Read the content returned by Gemini
+    raw_content = response.content
 
-# If Gemini returns normal text, use it directly
-if isinstance(raw_content, str):
-    answer_text = raw_content
+    # If Gemini returns normal text, use it directly
+    if isinstance(raw_content, str):
+        answer_text = raw_content
 
-# If Gemini returns a list of content blocks, extract only the text
-elif isinstance(raw_content, list):
-    text_parts = []
+    # If Gemini returns a list of content blocks, extract only the text
+    elif isinstance(raw_content, list):
+        text_parts = []
 
-    # Process each content block
-    for block in raw_content:
-        # Keep only text from dictionary-based content blocks
-        if isinstance(block, dict) and block.get("type") == "text":
-            text_parts.append(block.get("text", ""))
+        # Process each content block
+        for block in raw_content:
+            # Keep only text from dictionary-based content blocks
+            if isinstance(block, dict) and block.get("type") == "text":
+                text_parts.append(block.get("text", ""))
 
-        # Also keep plain text blocks if they appear
-        elif isinstance(block, str):
-            text_parts.append(block)
+            # Also keep plain text blocks if they appear
+            elif isinstance(block, str):
+                text_parts.append(block)
 
-    # Combine the readable text blocks
-    answer_text = "\n".join(text_parts).strip()
+        # Combine the readable text blocks
+        answer_text = "\n".join(text_parts).strip()
 
-# Convert any other response format into text
-else:
-    answer_text = str(raw_content)
+    # Convert any other response format into text
+    else:
+        answer_text = str(raw_content)
 
-# Return only the readable answer and source information
-return {
-    "answer": answer_text,
-    "sources": source_details
-}
-
+    # Return only the readable answer and source information
+    return {
+        "answer": answer_text,
+        "sources": source_details
+    }
 # Create a text box for entering a research-paper question
 question = st.text_input(
     "Enter your question:",
