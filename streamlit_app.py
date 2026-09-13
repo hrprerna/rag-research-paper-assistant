@@ -29,9 +29,17 @@ st.write(
     "Ask questions about the three AI research papers used in this RAG project."
 )
 
-# Read the API keys from environment variables
-PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+# Read the Pinecone API key from Streamlit secrets or environment variables
+PINECONE_API_KEY = st.secrets.get(
+    "PINECONE_API_KEY",
+    os.environ.get("PINECONE_API_KEY")
+)
+
+# Read the Gemini API key from Streamlit secrets or environment variables
+GEMINI_API_KEY = st.secrets.get(
+    "GEMINI_API_KEY",
+    os.environ.get("GEMINI_API_KEY")
+)
 
 # Check whether both API keys are available
 if not PINECONE_API_KEY or not GEMINI_API_KEY:
